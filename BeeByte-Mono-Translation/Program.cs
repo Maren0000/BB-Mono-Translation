@@ -123,7 +123,14 @@ namespace MonoNameTranslation
 
                 if (t.Contains('⇨'))
                 {
-                    _translations.Add(t.Split("⇨")[0], t.Split("⇨")[1]);
+                    if (ReverseOrder)
+                    {
+                        _translations.Add(t.Split("⇨")[0], t.Split("⇨")[1]);
+                    }
+                    else
+                    {
+                        _translations.Add(t.Split("⇨")[1], t.Split("⇨")[0]);
+                    }
                     continue;
                 }
             }
