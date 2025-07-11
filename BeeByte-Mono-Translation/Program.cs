@@ -188,6 +188,26 @@ namespace MonoNameTranslation
                     {
                         field.Name = fieldTranslation;
                     }
+
+                    // Hacky solution to fix existing custom attribute entries
+                    // not getting renamed properly by Mono.Cecil.
+                    // This does cause the order to be in reverse of what it
+                    // originally was, but *shrug*.
+                    foreach (CustomAttribute attribute in field.CustomAttributes)
+                    {
+                        for (int i = attribute.Fields.Count - 1; i >= 0; i--)
+                        {
+                            var fieldArg = attribute.Fields[i];
+
+                            if (translations._translations.TryGetValue(fieldArg.Name, out string fieldArgTranslation))
+                            {
+                                var value = fieldArg.Argument;
+                                attribute.Fields.RemoveAt(i);
+                                attribute.Fields.Add(new CustomAttributeNamedArgument(fieldArgTranslation, value));
+                            }
+                        }
+                        //attribute.Fields.Reverse();
+                    }
                 }
             }
 
