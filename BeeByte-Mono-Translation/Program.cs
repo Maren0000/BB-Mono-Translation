@@ -67,7 +67,6 @@ namespace MonoNameTranslation
             string[] translationText = File.ReadAllLines(path);
             foreach (string t in translationText)
             {   
-                // To-Do: Support ReverseOrder = False
                 if (t.Contains("#ReverseOrder"))
                 {
                     ReverseOrder = true;
